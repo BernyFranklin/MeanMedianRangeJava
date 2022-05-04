@@ -53,6 +53,35 @@
         // Create full path name
         String balancesFileName = "/Users/" + loginID + "/" + FILEPATH + "/" + fileName;
         
+        // Attepmt to open file
+        try {
+            // PART 1. Count the number of records in the file
+            //         Determine the mean when you know the 
+            //         record count and the total of all balances
+
+            // Declare infile Scanner
+            infile = new Scanner(new File(balancesFileName));
+
+            // While data is still in file
+            while (infile.hasNextInt()) {
+                acctNo = infile.nextInt();       // Read int for account number
+                customer = infile.next();        // Read String customer name
+                acctBal = infile.nextDouble();   // Read double for account balance
+                total += acctBal;                // Add each acctBal to total
+                recordCount++;                   // Update count
+            }   // End of while
+
+            // Close file
+            infile.close();
+            // Print data about file
+            System.out.printf ("%d Records in %s\n", recordCount, fileName);
+
+            // Compute mean
+            mean = total / recordCount;
+        }   // End of Try
+        catch (IOException ioe) {
+
+        }   // End of cath
 
 
      }   // End of PSV Main
