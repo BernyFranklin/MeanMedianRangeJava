@@ -7,9 +7,9 @@
  * 04 May 2022
  */
  
- import java.util.Scanner;
- import java.io.File;
- import java.io.IOException;
+ import java.util.Scanner;     // Used for input
+ import java.io.File;          // Used for file stream
+ import java.io.IOException;   // Used for exception handling
 
  // Start MeanMedianRange
  public class MeanMedianRange {
@@ -86,6 +86,8 @@
             // If there's an odd number of records.
             if (recordCount %2 == 1) {
                 recordsToSkip = recordCount/2;
+
+                // PART 3a. Open file and pass acctBal to median when reached recordsToSkip
                 infile = new Scanner(new File(balancesFileName));
                 for (int c = 0; infile.hasNextInt(); c++) {
                     // Cycle through each set of data
@@ -96,12 +98,15 @@
                     if (c == recordsToSkip) 
                         median = acctBal;
                 }   // End of loop
+                // Close file
                 infile.close();
             }   // End of Odd
 
             // Even number of records
             else {
                 recordsToSkip = recordCount/2 - 1;
+                // PART 3b. Open file and compute median by adding 
+                //          two middle values and dividing by 2.
                 infile = new Scanner(new File(balancesFileName));
                 for (int c = 0; infile.hasNextInt(); c++) {
                     // Cycle through data... again
@@ -115,23 +120,20 @@
                     else if (c == (recordsToSkip + 1))
                         even2 = acctBal;
                 }   // End of loop
+                // Close file
                 infile.close();
                 // Calculate median
                 median = (even1 + even2)/2;   // Add two middle records and get average
-            }
-            // PART 3. Open the file, skip leading records, determine median
-            
-            
+            }   // End of even
             
         }   // End of Try
         catch (IOException ioe) {
             System.out.println ("Exception occured reading Balances.txt");
-        }   // End of cath
+        }   // End of catch
 
         // Compute and display the results
         System.out.printf ("The mean of %s is %.2f\n", fileName, mean);
         System.out.printf ("The median of %s is %.2f\n\n", fileName, median);
-        
 
      }   // End of PSV Main
  }   // End of MeanMedianRange
