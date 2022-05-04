@@ -15,7 +15,7 @@
  public class MeanMedianRange {
 
      // Path to file
-     static final String FILEPATH = "src";
+     static final String FILEPATH = "Documents/GitHub/MeanMedianRangeJava/src";
 
      // Start PSV Main
      public static void main(String[] args) {
@@ -39,6 +39,21 @@
 
         // Create the Scanner objects for the keyboard and disk access
         Scanner stdin = new Scanner(System.in);
+
+        // Get just the name of the file from the keyboard
+        // Build the path name and file name
+        // Identify the folder where the file is located
+        // The USer name is in the environment variable USER on my machine (Mac)
+        System.out.printf ("Enter the name of the data file: ");
+        fileName = stdin.nextLine();                   // Read the file name from stdin
+        String loginID = System.getenv("USER");   // This machine is Mac
+        // If Windows change to USERNAME
+        if (loginID == null) loginID = System.getenv("USERNAME");
+        
+        // Create full path name
+        String balancesFileName = "/Users/" + loginID + "/" + FILEPATH + "/" + fileName;
+        
+
 
      }   // End of PSV Main
  }   // End of MeanMedianRange
