@@ -36,6 +36,8 @@
         double total = 0;        // Used when computing the mean
         double mean = 0;         // Mean (average) of all acct balances
         double median = 0;       // Median value of acct balances
+        double even1 = 0;        // Used for left of median for even recrods
+        double even2 = 0;        // Used for right of median for even records
 
         // Create the Scanner objects for the keyboard and disk access
         Scanner stdin = new Scanner(System.in);
@@ -44,7 +46,7 @@
         // Build the path name and file name
         // Identify the folder where the file is located
         // The USer name is in the environment variable USER on my machine (Mac)
-        System.out.printf ("Enter the name of the data file: ");
+        System.out.printf ("\nEnter the name of the data file: ");
         fileName = stdin.nextLine();                   // Read the file name from stdin
         String loginID = System.getenv("USER");   // This machine is Mac
         // If Windows change to USERNAME
@@ -74,15 +76,62 @@
             // Close file
             infile.close();
             // Print data about file
-            System.out.printf ("%d Records in %s\n", recordCount, fileName);
+            System.out.printf ("\n%d Records in %s\n", recordCount, fileName);
 
             // Compute mean
             mean = total / recordCount;
+
+            // PART 2. Determine the number of records to skip
+            
+            // If there's an odd number of records.
+            if (recordCount %2 == 1) {
+                recordsToSkip = recordCount/2;
+                infile = new Scanner(new File(balancesFileName));
+                for (int c = 0; infile.hasNextInt(); c++) {
+                    // Cycle through each set of data
+                    acctNo = infile.nextInt();
+                    customer = infile.next();
+                    acctBal = infile.nextDouble();
+                    
+                    if (c == recordsToSkip) 
+                        median = acctBal;
+                }   // End of loop
+                infile.close();
+            }   // End of Odd
+
+            // Even number of records
+            else {
+                recordsToSkip = recordCount/2 - 1;
+                infile = new Scanner(new File(balancesFileName));
+                for (int c = 0; infile.hasNextInt(); c++) {
+                    // Cycle through data... again
+                    acctNo = infile.nextInt();
+                    customer = infile.next();
+                    acctBal = infile.nextDouble();
+
+                    // Have we reached one of our stops
+                    if (c == recordsToSkip)
+                        even1 = acctBal;
+                    else if (c == (recordsToSkip + 1))
+                        even2 = acctBal;
+                }   // End of loop
+                infile.close();
+                // Calculate median
+                median = (even1 + even2)/2;   // Add two middle records and get average
+            }
+            // PART 3. Open the file, skip leading records, determine median
+            
+            
+            
         }   // End of Try
         catch (IOException ioe) {
-
+            System.out.println ("Exception occured reading Balances.txt");
         }   // End of cath
 
+        // Compute and display the results
+        System.out.printf ("The mean of %s is %.2f\n", fileName, mean);
+        System.out.printf ("The median of %s is %.2f\n\n", fileName, median);
+        
 
      }   // End of PSV Main
  }   // End of MeanMedianRange
